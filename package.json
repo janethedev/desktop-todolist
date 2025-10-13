@@ -1,0 +1,56 @@
+{
+  "name": "todo-list-app",
+  "version": "1.0.0",
+  "description": "A modern to-do list desktop application",
+  "main": "main.js",
+  "productName": "to do list",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "build": "electron-builder --win"
+  },
+  "keywords": [
+    "electron",
+    "todo",
+    "productivity"
+  ],
+  "author": "Jane The Dev",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^27.0.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.janethedev.todolist",
+    "productName": "to do list",
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico",
+      "signAndEditExecutable": false
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer.js",
+      "index.html",
+      "styles.css",
+      "todo_list.ico"
+    ],
+    "directories": {
+      "output": "dist"
+    }
+  }
+}
