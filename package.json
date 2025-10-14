@@ -24,6 +24,7 @@
     "appId": "com.janethedev.todolist",
     "productName": "to do list",
     "win": {
+      "requestedExecutionLevel": "asInvoker",
       "target": [
         {
           "target": "nsis",

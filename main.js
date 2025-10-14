@@ -1,9 +1,38 @@
 const { app, BrowserWindow, ipcMain, Menu, Tray, nativeImage } = require('electron');
+// Ensure Windows taskbar groups pinned and running icons together by using a stable AppUserModelID
+const APP_ID = 'com.janethedev.todolist';
+if (process.platform === 'win32') {
+  app.setAppUserModelId(APP_ID);
+}
 const path = require('path');
 const fs = require('fs');
 
 // 禁用GPU硬件加速，避免GPU进程错误
 app.disableHardwareAcceleration();
+
+// 单实例锁：确保应用只能运行一个实例
+const gotTheLock = app.requestSingleInstanceLock();
+
+if (!gotTheLock) {
+  // 如果没有获取到锁，说明已有实例在运行，直接退出
+  app.quit();
+} else {
+  // 当尝试运行第二个实例时，聚焦到已存在的窗口
+  app.on('second-instance', (event, commandLine, workingDirectory) => {
+    if (mainWindow) {
+      // 如果窗口被隐藏，先显示
+      if (!mainWindow.isVisible()) {
+        mainWindow.show();
+      }
+      // 如果窗口被最小化，恢复窗口
+      if (mainWindow.isMinimized()) {
+        mainWindow.restore();
+      }
+      // 聚焦窗口
+      mainWindow.focus();
+    }
+  });
+}
 
 // 数据文件路径
 const todosFilePath = path.join(app.getPath('userData'), 'todos.json');
@@ -19,6 +48,7 @@ function createWindow() {
     minHeight: 300,
     frame: false,
     maximizable: false,
+    icon: path.join(__dirname, 'todo_list.ico'), // 添加这一行
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,

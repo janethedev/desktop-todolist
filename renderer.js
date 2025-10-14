@@ -54,7 +54,8 @@ function renderTodos() {
         ${todo.completed ? 'checked' : ''}
         data-index="${index}"
       >
-      <span class="todo-text">${escapeHtml(todo.text)}</span>
+      <span class="todo-text" data-index="${index}">${escapeHtml(todo.text)}</span>
+      <button class="edit-btn" data-index="${index}">编辑</button>
       <button class="delete-btn" data-index="${index}">删除</button>
     `;
     
@@ -111,6 +112,98 @@ async function handleDelete(e) {
   updateStats();
 }
 
+// 进入编辑模式
+function enterEditMode(index) {
+  const todoItem = todoList.children[index];
+  const todoTextSpan = todoItem.querySelector('.todo-text');
+  const editBtn = todoItem.querySelector('.edit-btn');
+  const deleteBtn = todoItem.querySelector('.delete-btn');
+  const currentText = todos[index].text;
+  
+  // 创建编辑容器
+  const editContainer = document.createElement('div');
+  editContainer.className = 'edit-container';
+  
+  // 创建编辑输入框
+  const editInput = document.createElement('input');
+  editInput.type = 'text';
+  editInput.className = 'todo-edit-input';
+  editInput.value = currentText;
+  editInput.maxLength = 200;
+  editInput.dataset.index = index;
+  
+  // 创建浮动操作面板
+  const actionsPanel = document.createElement('div');
+  actionsPanel.className = 'edit-actions-panel';
+  
+  // 创建保存按钮（使用图标）
+  const saveBtn = document.createElement('button');
+  saveBtn.className = 'save-btn';
+  saveBtn.innerHTML = '✓';
+  saveBtn.title = '保存 (Enter)';
+  saveBtn.dataset.index = index;
+  
+  // 创建取消按钮（使用图标）
+  const cancelBtn = document.createElement('button');
+  cancelBtn.className = 'cancel-btn';
+  cancelBtn.innerHTML = '✕';
+  cancelBtn.title = '取消 (Esc)';
+  cancelBtn.dataset.index = index;
+  
+  actionsPanel.appendChild(saveBtn);
+  actionsPanel.appendChild(cancelBtn);
+  
+  editContainer.appendChild(editInput);
+  editContainer.appendChild(actionsPanel);
+  
+  // 替换文本为编辑容器
+  todoTextSpan.replaceWith(editContainer);
+  editInput.focus();
+  editInput.select();
+  
+  // 隐藏编辑和删除按钮
+  editBtn.style.display = 'none';
+  deleteBtn.style.display = 'none';
+}
+
+// 退出编辑模式
+function exitEditMode(index, save = false) {
+  const todoItem = todoList.children[index];
+  const editInput = todoItem.querySelector('.todo-edit-input');
+  
+  if (!editInput) return;
+  
+  const newText = editInput.value.trim();
+  
+  // 如果保存且文本有效，更新数据
+  if (save && newText) {
+    todos[index].text = newText;
+    window.electronAPI.saveTodos(todos);
+  }
+  
+  // 重新渲染所有待办事项
+  renderTodos();
+  updateStats();
+}
+
+// 处理编辑按钮点击
+function handleEdit(e) {
+  const index = parseInt(e.target.dataset.index);
+  enterEditMode(index);
+}
+
+// 处理保存按钮点击
+async function handleSave(e) {
+  const index = parseInt(e.target.dataset.index);
+  exitEditMode(index, true);
+}
+
+// 处理取消按钮点击
+function handleCancel(e) {
+  const index = parseInt(e.target.dataset.index);
+  exitEditMode(index, false);
+}
+
 // 更新统计信息
 function updateStats() {
   const total = todos.length;
@@ -137,6 +230,32 @@ todoList.addEventListener('change', (e) => {
 todoList.addEventListener('click', (e) => {
   if (e.target.classList.contains('delete-btn')) {
     handleDelete(e);
+  } else if (e.target.classList.contains('edit-btn')) {
+    handleEdit(e);
+  } else if (e.target.classList.contains('save-btn')) {
+    handleSave(e);
+  } else if (e.target.classList.contains('cancel-btn')) {
+    handleCancel(e);
+  }
+});
+
+// 双击任务文本进入编辑模式
+todoList.addEventListener('dblclick', (e) => {
+  if (e.target.classList.contains('todo-text')) {
+    const index = parseInt(e.target.dataset.index);
+    enterEditMode(index);
+  }
+});
+
+// 编辑输入框键盘事件
+todoList.addEventListener('keydown', (e) => {
+  if (e.target.classList.contains('todo-edit-input')) {
+    const index = parseInt(e.target.dataset.index);
+    if (e.key === 'Enter') {
+      exitEditMode(index, true);
+    } else if (e.key === 'Escape') {
+      exitEditMode(index, false);
+    }
   }
 });
 

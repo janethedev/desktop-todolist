@@ -218,6 +218,7 @@ body {
   color: #848489;
 }
 
+.edit-btn,
 .delete-btn {
   padding: 4px 8px;
   background: transparent;
@@ -227,11 +228,99 @@ body {
   font-size: 12px;
   cursor: pointer;
   transition: background 0.2s ease;
+  white-space: nowrap;
 }
 
+.edit-btn:hover,
 .delete-btn:hover {
   background: #F2F2F5;
   color: #1C1C29;
+}
+
+.edit-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+
+.todo-edit-input {
+  flex: 1;
+  padding: 6px 8px;
+  border: 1px solid #1F49AD;
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  outline: none;
+  line-height: 1.538em;
+  background: #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(31, 73, 173, 0.1);
+}
+
+.edit-actions-panel {
+  display: flex;
+  gap: 4px;
+  background: #FFFFFF;
+  padding: 2px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border: 1px solid #BEBEC4;
+}
+
+.save-btn,
+.cancel-btn {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: 3px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'IBM Plex Sans', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.save-btn {
+  background: #1F49AD;
+  color: white;
+}
+
+.save-btn:hover {
+  background: #1a3d8f;
+  transform: scale(1.05);
+}
+
+.save-btn:active {
+  transform: scale(0.95);
+}
+
+.cancel-btn {
+  background: #F2F2F5;
+  color: #848489;
+}
+
+.cancel-btn:hover {
+  background: #E5E5E7;
+  color: #1C1C29;
+  transform: scale(1.05);
+}
+
+.cancel-btn:active {
+  transform: scale(0.95);
+}
+
+.todo-text {
+  cursor: pointer;
+  user-select: none;
+}
+
+.todo-text:hover {
+  color: #1F49AD;
 }
 
 .empty-state {
