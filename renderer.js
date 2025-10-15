@@ -10,8 +10,12 @@ const totalTodosEl = document.getElementById('totalTodos');
 const completedTodosEl = document.getElementById('completedTodos');
 const closeBtn = document.getElementById('closeBtn');
 const pinBtn = document.getElementById('pinBtn');
+const importantToggle = document.getElementById('importantToggle');
 
-// 排序待办事项：未完成的在前，已完成的在后
+// 当前是否标记为重要
+let isImportant = false;
+
+// 排序待办事项：未完成的在前，已完成的在后，重要的在最前面
 function sortTodos() {
   todos.sort((a, b) => {
     if (a.completed !== b.completed) {
@@ -24,7 +28,12 @@ function sortTodos() {
       return a.id - b.id;
     }
 
-    // 未完成事项：新的（id 更大）排在前面
+    // 未完成事项：重要的在前，然后按时间排序
+    if (a.important !== b.important) {
+      return b.important - a.important; // true > false，重要的在前
+    }
+    
+    // 同等重要性：新的（id 更大）排在前面
     return b.id - a.id;
   });
 }
@@ -32,6 +41,13 @@ function sortTodos() {
 // 初始化：加载已保存的待办事项
 async function init() {
   todos = await window.electronAPI.loadTodos();
+  
+  // 向后兼容：为旧数据添加 important 字段
+  todos = todos.map(todo => ({
+    ...todo,
+    important: todo.important || false
+  }));
+  
   // 加载后也排序一次，确保顺序正确
   sortTodos();
   renderTodos();
@@ -45,7 +61,7 @@ function renderTodos() {
   
   todos.forEach((todo, index) => {
     const li = document.createElement('li');
-    li.className = `todo-item ${todo.completed ? 'completed' : ''}`;
+    li.className = `todo-item ${todo.completed ? 'completed' : ''} ${todo.important ? 'important' : ''}`;
     
     li.innerHTML = `
       <input 
@@ -54,9 +70,10 @@ function renderTodos() {
         ${todo.completed ? 'checked' : ''}
         data-index="${index}"
       >
+      ${todo.important ? '<span class="important-badge" title="重要">⭐</span>' : ''}
       <span class="todo-text" data-index="${index}">${escapeHtml(todo.text)}</span>
-      <button class="edit-btn" data-index="${index}">编辑</button>
-      <button class="delete-btn" data-index="${index}">删除</button>
+      <button class="edit-btn" data-index="${index}" title="编辑">✏️</button>
+      <button class="delete-btn" data-index="${index}" title="删除">🗑️</button>
     `;
     
     todoList.appendChild(li);
@@ -75,7 +92,8 @@ async function addTodo() {
   todos.push({
     id: Date.now(),
     text: text,
-    completed: false
+    completed: false,
+    important: isImportant
   });
   
   // 排序，确保新事项排在未完成事项的最前面，已完成事项的前面
@@ -83,6 +101,10 @@ async function addTodo() {
   
   todoInput.value = '';
   todoInput.focus();
+  
+  // 重置重要性标记
+  isImportant = false;
+  importantToggle.classList.remove('active');
   
   await window.electronAPI.saveTodos(todos);
   renderTodos();
@@ -276,6 +298,12 @@ pinBtn.addEventListener('click', async () => {
   isPinned = !isPinned;
   await window.electronAPI.toggleAlwaysOnTop(isPinned);
   pinBtn.classList.toggle('pinned', isPinned);
+});
+
+// 重要性切换
+importantToggle.addEventListener('click', () => {
+  isImportant = !isImportant;
+  importantToggle.classList.toggle('active', isImportant);
 });
 
 // 页面加载时初始化

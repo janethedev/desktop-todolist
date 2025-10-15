@@ -93,6 +93,37 @@ body {
   display: flex;
   gap: 8px;
   margin-bottom: 12px;
+  align-items: center;
+}
+
+.important-toggle {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #BEBEC4;
+  background: #FFFFFF;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  flex-shrink: 0;
+  opacity: 0.5;
+}
+
+.important-toggle:hover {
+  opacity: 1;
+  border-color: #FFA500;
+  background: #FFF8E7;
+}
+
+.important-toggle.active {
+  opacity: 1;
+  background: #FFA500;
+  border-color: #FFA500;
+  transform: scale(1.1);
 }
 
 #todoInput {
@@ -203,6 +234,21 @@ body {
   cursor: pointer;
   accent-color: #1F49AD;
   margin: 0;
+  flex-shrink: 0;
+}
+
+.important-badge {
+  font-size: 14px;
+  flex-shrink: 0;
+  user-select: none;
+  line-height: 1;
+}
+
+.todo-item.important {
+  background: #FFF8E7;
+  border-left: 3px solid #FFA500;
+  padding-left: 5px;
+  margin-left: -8px;
 }
 
 .todo-text {
@@ -220,21 +266,32 @@ body {
 
 .edit-btn,
 .delete-btn {
-  padding: 4px 8px;
+  width: 28px;
+  height: 28px;
+  padding: 0;
   background: transparent;
-  color: #848489;
   border: none;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 16px;
   cursor: pointer;
-  transition: background 0.2s ease;
-  white-space: nowrap;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.6;
+  flex-shrink: 0;
 }
 
 .edit-btn:hover,
 .delete-btn:hover {
   background: #F2F2F5;
-  color: #1C1C29;
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.edit-btn:active,
+.delete-btn:active {
+  transform: scale(0.95);
 }
 
 .edit-container {
@@ -243,10 +300,13 @@ body {
   align-items: center;
   gap: 6px;
   position: relative;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .todo-edit-input {
   flex: 1;
+  min-width: 0;
   padding: 6px 8px;
   border: 1px solid #1F49AD;
   border-radius: 4px;
@@ -266,6 +326,7 @@ body {
   border-radius: 4px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   border: 1px solid #BEBEC4;
+  flex-shrink: 0;
 }
 
 .save-btn,
