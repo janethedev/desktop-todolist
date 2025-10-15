@@ -1,20 +1,43 @@
-# To-Do List 桌面应用
+# To-Do List 应用
 
-一个简洁、现代的待办事项桌面应用，使用 Electron 构建，支持 Windows、Mac 和 Linux。
+一个使用 Tauri + React + Ant Design 构建的轻量级、高性能待办事项桌面应用。
 
-## ✨ 功能特性
+## 技术栈
 
-- ✅ 添加待办事项
-- ✅ 标记完成/未完成
-- ✅ 删除待办事项
+- **Tauri 2** - 轻量级桌面应用框架
+- **React 19** - UI 框架
+- **Ant Design 5** - UI 组件库
+- **Vite** - 快速构建工具
+- **Rust** - 后端语言
+
+## 功能特性
+
+- ✅ 添加、编辑、删除待办事项
+- ✅ 标记完成/取消完成
+- ✅ 重要性标记（⭐）
+- ✅ 双击编辑
+- ✅ 自定义标题栏
 - ✅ 窗口置顶功能
-- ✅ 本地数据持久化（自动保存到本地JSON文件）
-- ✅ 实时统计（总计和已完成数量）
-- ✅ 现代化UI设计，基于Figma设计规范
-- ✅ 无边框窗口，简洁界面
-- ✅ 跨平台支持
+- ✅ 系统托盘图标
+- ✅ 单实例锁定
+- ✅ 数据持久化
+- ✅ 智能排序（重要且未完成优先）
 
-## 🚀 快速开始
+## 为什么选择 Tauri？
+
+相比 Electron：
+- **更小的体积** - 安装包体积减少 90% 以上
+- **更低的内存占用** - 运行时内存使用减少 50% 以上
+- **更快的启动速度** - 使用系统原生 WebView
+- **更安全** - Rust 后端提供更强的安全保障
+
+## 开发
+
+### 前置要求
+
+- Node.js 16+
+- Rust 1.77.2+
+- Windows: Visual Studio C++ Build Tools
 
 ### 安装依赖
 
@@ -22,87 +45,43 @@
 npm install
 ```
 
-### 运行应用
+### 运行开发环境
 
 ```bash
-npm start
+npm run dev
 ```
 
-## 📁 项目结构
-
-```
-to-do-list/
-├── main.js              # Electron主进程
-├── preload.js           # 预加载脚本（安全通信桥梁）
-├── index.html           # 主界面
-├── styles.css           # 样式表
-├── renderer.js          # 渲染进程业务逻辑
-├── package.json         # 项目配置
-└── README.md           # 说明文档
-```
-
-## 💾 数据存储
-
-待办事项数据自动保存在：
-- **Windows**: `%APPDATA%/todo-list-app/todos.json`
-- **Mac**: `~/Library/Application Support/todo-list-app/todos.json`
-- **Linux**: `~/.config/todo-list-app/todos.json`
-
-## 🎨 UI设计
-
-- 渐变紫色背景
-- 圆角卡片设计
-- 流畅的动画效果
-- 响应式布局
-- 自定义滚动条
-
-## 🔧 技术栈
-
-- **Electron**: 跨平台桌面应用框架
-- **Node.js**: 文件系统操作
-- **HTML/CSS/JavaScript**: 前端界面
-- **IPC通信**: 主进程与渲染进程安全通信
-- **事件委托**: 优化性能的事件处理机制
-
-## 📝 使用说明
-
-1. 在输入框中输入待办事项内容
-2. 点击"添加"按钮或按回车键添加
-3. 点击复选框标记任务完成/未完成
-4. 点击"删除"按钮移除任务
-5. 点击📌图标置顶窗口（始终显示在最前面）
-6. 点击✕图标关闭应用
-7. 所有操作自动保存，下次打开应用时数据仍在
-
-## ⚡ 性能优化
-
-- 使用事件委托减少内存占用
-- 移除未使用的代码和依赖
-- 优化CSS，减少重复样式
-- 禁用GPU硬件加速，避免兼容性问题
-
-## 🛡️ 安全性
-
-- 启用 `contextIsolation` 隔离上下文
-- 使用 `preload.js` 安全暴露API
-- 禁用 `nodeIntegration` 防止安全风险
-- HTML内容转义防止XSS攻击
-
-## 📦 打包发布
-
-如需打包成可执行文件，可以使用 electron-builder：
-
-```bash
-npm install --save-dev electron-builder
-```
-
-在 package.json 中添加打包脚本和配置，然后运行：
+### 构建生产版本
 
 ```bash
 npm run build
 ```
 
-## 📄 许可证
+构建完成后，安装包将在 `src-tauri/target/release/bundle/` 目录中。
+
+## 项目结构
+
+```
+src/
+└── renderer/          # React 前端
+    ├── App.jsx        # 主应用组件
+    ├── main.jsx       # React 入口
+    ├── App.css        # 样式文件
+    ├── tauri-api.js   # Tauri API 封装
+    └── components/    # 组件目录
+        ├── TitleBar.jsx
+        ├── TodoInput.jsx
+        ├── TodoList.jsx
+        └── TodoStats.jsx
+
+src-tauri/             # Rust 后端
+├── src/
+│   ├── main.rs        # 主入口
+│   └── lib.rs         # 核心逻辑
+├── Cargo.toml         # Rust 依赖配置
+└── tauri.conf.json    # Tauri 配置
+```
+
+## 许可证
 
 MIT License
-

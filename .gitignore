@@ -3,13 +3,14 @@ node_modules/
 
 # Build output
 dist/
-build/
-out/
+src-tauri/target/
 
-# Electron build output
+# Tauri build output
 *.exe
 *.dmg
 *.AppImage
+*.msi
+*.deb
 
 # OS files
 .DS_Store
@@ -24,6 +25,7 @@ Thumbs.db
 # Logs
 *.log
 npm-debug.log*
+dev.log
 
 # Data files (optional - comment out if you want to track)
 todos.json

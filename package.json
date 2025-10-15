@@ -2,56 +2,29 @@
   "name": "todo-list-app",
   "version": "1.0.0",
   "description": "A modern to-do list desktop application",
-  "main": "main.js",
-  "productName": "to do list",
+  "type": "module",
   "scripts": {
-    "start": "electron .",
-    "dev": "electron .",
-    "build": "electron-builder --win"
+    "dev": "tauri dev",
+    "build": "tauri build",
+    "preview": "vite preview"
   },
   "keywords": [
-    "electron",
+    "tauri",
     "todo",
     "productivity"
   ],
   "author": "Jane The Dev",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^27.0.0",
-    "electron-builder": "^26.0.12"
+    "@tauri-apps/cli": "^2.8.4",
+    "@vitejs/plugin-react": "^5.0.4",
+    "vite": "^7.1.10"
   },
-  "build": {
-    "appId": "com.janethedev.todolist",
-    "productName": "to do list",
-    "win": {
-      "requestedExecutionLevel": "asInvoker",
-      "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64"
-          ]
-        },
-        {
-          "target": "portable",
-          "arch": [
-            "x64"
-          ]
-        }
-      ],
-      "icon": "build/icon.ico",
-      "signAndEditExecutable": false
-    },
-    "files": [
-      "main.js",
-      "preload.js",
-      "renderer.js",
-      "index.html",
-      "styles.css",
-      "todo_list.ico"
-    ],
-    "directories": {
-      "output": "dist"
-    }
+  "dependencies": {
+    "@tauri-apps/api": "^2.8.0",
+    "@tauri-apps/plugin-shell": "^2.3.1",
+    "antd": "^5.27.5",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   }
 }
