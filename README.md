@@ -11,11 +11,13 @@ A minimalist to-do list app based on Tauri.</a>
 
 ## Preview
 
-![预览](./docs/preview.png) 
+<p align="center">
+  <img src="./docs/preview.png" alt="预览" width="50%" />
+</p>
 
 ## Install
 
-[Release page](https://github.com/clash-verge-rev/clash-verge-rev/releases)
+[Release page](https://github.com/janethedev/desktop-todolist/releases)
 
 ## Features
 
