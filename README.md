@@ -1,16 +1,23 @@
-# To-Do List 应用
+<h1 align="center">
+  <img src="./src-tauri/icons/icon.ico" alt="to do list" width="128" />
+  <br>
+  QuickTask</a>
+  <br>
+</h1>
 
-一个使用 Tauri + React + Ant Design 构建的轻量级、高性能待办事项桌面应用。
+<h3 align="center">
+A minimalist to-do list app based on Tauri.</a>
+</h3>
 
-## 技术栈
+## Preview
 
-- **Tauri 2** - 轻量级桌面应用框架
-- **React 19** - UI 框架
-- **Ant Design 5** - UI 组件库
-- **Vite** - 快速构建工具
-- **Rust** - 后端语言
+![预览](./docs/preview.png) 
 
-## 功能特性
+## Install
+
+[Release page](https://github.com/clash-verge-rev/clash-verge-rev/releases)
+
+## Features
 
 - ✅ 添加、编辑、删除待办事项
 - ✅ 标记完成/取消完成
@@ -22,6 +29,14 @@
 - ✅ 单实例锁定
 - ✅ 数据持久化
 - ✅ 智能排序（重要且未完成优先）
+
+## 技术栈
+
+- **Tauri 2** - 轻量级桌面应用框架
+- **React 19** - UI 框架
+- **Ant Design 5** - UI 组件库
+- **Vite** - 快速构建工具
+- **Rust** - 后端语言
 
 ## 为什么选择 Tauri？
 
