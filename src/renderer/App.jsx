@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { getCurrentWindow } from '@tauri-apps/api/window';  // 添加导入
 import TitleBar from './components/TitleBar';
 import TodoInput from './components/TodoInput';
 import TodoStats from './components/TodoStats';
@@ -34,15 +35,28 @@ function App() {
   // 初始化：加载已保存的待办事项
   useEffect(() => {
     const loadTodos = async () => {
-      const loadedTodos = await window.electronAPI.loadTodos();
-      
-      // 向后兼容：为旧数据添加 important 字段
-      const todosWithImportant = loadedTodos.map(todo => ({
-        ...todo,
-        important: todo.important || false
-      }));
-      
-      setTodos(sortTodos(todosWithImportant));
+      try {
+        const loadedTodos = await window.electronAPI.loadTodos();
+        
+        // 向后兼容：为旧数据添加 important 字段
+        const todosWithImportant = loadedTodos.map(todo => ({
+          ...todo,
+          important: todo.important || false
+        }));
+        
+        setTodos(sortTodos(todosWithImportant));
+      } catch (error) {
+        console.error('加载待办事项失败:', error);
+        // 即使加载失败，也继续使用空数组
+      } finally {
+        // 无论成功还是失败，都显示窗口
+        try {
+          const appWindow = getCurrentWindow();
+          await appWindow.show();
+        } catch (err) {
+          console.error('显示窗口失败:', err);
+        }
+      }
     };
 
     loadTodos();
