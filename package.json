@@ -1,7 +1,7 @@
 {
-  "name": "todo-list-app",
+  "name": "quicktask",
   "version": "1.0.0",
-  "description": "A modern to-do list desktop application",
+  "description": "A minimalist task management desktop application",
   "type": "module",
   "scripts": {
     "dev": "tauri dev",

@@ -1,8 +1,8 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-  "productName": "to do list",
-  "version": "1.0.0-beta.1",
-  "identifier": "com.janethedev.todolist",
+  "productName": "QuickTask",
+  "version": "1.0.0-beta.2",
+  "identifier": "com.janethedev.quicktask",
   "build": {
     "frontendDist": "../dist",
     "devUrl": "http://localhost:5173",
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "To-Do List",
+        "title": "QuickTask",
         "width": 280,
         "height": 380,
         "minWidth": 280,
@@ -31,7 +31,7 @@
   },
   "bundle": {
     "active": true,
-    "targets": "all",
+    "targets": "nsis",
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
