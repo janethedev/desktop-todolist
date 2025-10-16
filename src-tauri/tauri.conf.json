@@ -16,10 +16,10 @@
         "width": 280,
         "height": 380,
         "minWidth": 280,
-        "maxWidth": 280,
-        "minHeight": 300,
+        "minHeight": 340,
         "resizable": true,
         "decorations": false,
+        "backgroundColor": "#FFFFFF",
         "alwaysOnTop": false,
         "center": true,
         "visible": false

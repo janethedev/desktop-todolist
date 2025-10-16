@@ -21,6 +21,7 @@
     "vite": "^7.1.10"
   },
   "dependencies": {
+    "@ant-design/icons": "^6.1.0",
     "@tauri-apps/api": "^2.8.0",
     "@tauri-apps/plugin-shell": "^2.3.1",
     "antd": "^5.27.5",

@@ -5,7 +5,7 @@
 }
 
 body {
-  font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   background: #FFFFFF;
   margin: 0;
   padding: 0;
@@ -24,21 +24,23 @@ body {
   flex-direction: column;
 }
 
+/* 自定义标题栏样式 */
 .titlebar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 32px;
   padding: 0 12px;
-  background: #F2F2F5;
+  background: #f5f5f5;
   -webkit-app-region: drag;
   user-select: none;
   gap: 8px;
+  border-bottom: 1px solid #d9d9d9;
 }
 
 .pin-btn {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   border: none;
   background: transparent;
   font-size: 14px;
@@ -50,31 +52,34 @@ body {
   padding: 0;
   line-height: 1;
   transition: all 0.2s ease;
-  opacity: 0.5;
+  opacity: 0.6;
+  border-radius: 4px;
 }
 
 .pin-btn:hover {
   opacity: 1;
-  transform: scale(1.1);
+  background: #e6e6e6;
 }
 
 .pin-btn.pinned {
   opacity: 1;
+  background: #1890ff;
+  color: white;
 }
 
 .titlebar-text {
-  color: #1C1C29;
+  color: rgba(0, 0, 0, 0.85);
   font-size: 13px;
   font-weight: 500;
   flex: 1;
 }
 
 .close-btn {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   border: none;
   background: transparent;
-  color: #848489;
+  color: rgba(0, 0, 0, 0.45);
   font-size: 16px;
   cursor: pointer;
   display: flex;
@@ -84,13 +89,15 @@ body {
   padding: 0;
   line-height: 1;
   transition: all 0.2s ease;
+  border-radius: 4px;
 }
 
 .close-btn:hover {
-  background: #E81123;
+  background: #ff4d4f;
   color: white;
 }
 
+/* 主容器 */
 .container {
   background: #FFFFFF;
   width: 100%;
@@ -101,70 +108,65 @@ body {
   position: relative;
 }
 
+/* 输入区域 */
 .input-section {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-  align-items: center;
+  margin-bottom: 16px;
 }
 
-.important-toggle {
-  width: 32px;
-  height: 32px;
-  border: 1px solid #BEBEC4;
-  background: #FFFFFF;
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  flex-shrink: 0;
-  opacity: 0.5;
-}
-
-.important-toggle:hover {
-  opacity: 1;
-  border-color: #FFA500;
-  background: #FFF8E7;
-}
-
-.important-toggle.active {
-  opacity: 1;
-  background: #FFA500;
-  border-color: #FFA500;
-  transform: scale(1.1);
-}
-
-.todo-input {
-  flex: 1;
-}
-
-.add-btn {
-  font-size: 18px !important;
-  font-weight: 500;
-  padding: 4px 16px !important;
-  height: 32px !important;
-}
-
+/* 统计信息 */
 .stats {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 12px;
-  padding: 8px 0;
+  margin-bottom: 16px;
+  padding: 8px 12px;
+  background: #fafafa;
+  border-radius: 4px;
   font-size: 13px;
-  color: #848489;
-  font-weight: 400;
+  color: rgba(0, 0, 0, 0.65);
 }
 
+/* 待办列表 */
 .todo-list {
-  list-style: none;
   flex: 1;
   overflow-y: auto;
-  margin: 0;
-  padding: 0;
+  padding-right: 4px;
+}
+
+.todo-list-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 使编辑区域在任何情况下都占满宽度 */
+.edit-compact {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  gap: 4px;
+  align-items: center;
+}
+
+/* 让待办项行容器与左侧区域都能铺满行宽 */
+.todo-item-row {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.todo-item-left {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.todo-item-actions {
+  display: flex;
+  gap: 4px;
+  align-items: center;
 }
 
 .todo-list::-webkit-scrollbar {
@@ -176,246 +178,57 @@ body {
 }
 
 .todo-list::-webkit-scrollbar-thumb {
-  background: #BEBEC4;
+  background: #d9d9d9;
   border-radius: 3px;
 }
 
 .todo-list::-webkit-scrollbar-thumb:hover {
-  background: #848489;
+  background: #bfbfbf;
 }
 
-.todo-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0;
-  margin-bottom: 12px;
-  background: transparent;
-  transition: all 0.2s ease;
-  animation: slideIn 0.3s ease;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.todo-item:last-child {
-  margin-bottom: 0;
-}
-
-.todo-item.completed {
-  opacity: 1;
-}
-
-.todo-checkbox {
-  flex-shrink: 0;
+/* 重要性标记样式 */
+.todo-item-important {
+  background: #fffbe6 !important;
+  border-left: 3px solid #faad14 !important;
 }
 
 .important-badge {
   font-size: 14px;
-  flex-shrink: 0;
-  user-select: none;
-  line-height: 1;
-}
-
-.todo-item.important {
-  background: #FFF8E7;
-  border-left: 3px solid #FFA500;
-  padding-left: 5px;
-  margin-left: -8px;
+  margin-right: -4px;
 }
 
 .todo-text {
   flex: 1;
-  font-size: 13px;
-  line-height: 1.538em;
-  color: #1C1C29;
-  word-break: break-word;
   cursor: pointer;
   user-select: none;
 }
 
 .todo-text:hover {
-  color: #1F49AD;
+  color: #1890ff;
 }
 
-.todo-item.completed .todo-text {
+.todo-text-completed {
   text-decoration: line-through;
-  color: #848489;
+  color: rgba(0, 0, 0, 0.45);
 }
 
-.edit-btn,
-.delete-btn {
-  width: 28px;
-  height: 28px;
-  padding: 0;
-  background: transparent;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0.6;
-  flex-shrink: 0;
-}
-
-.edit-btn:hover,
-.delete-btn:hover {
-  background: #F2F2F5;
-  opacity: 1;
-  transform: scale(1.1);
-}
-
-.edit-btn:active,
-.delete-btn:active {
-  transform: scale(0.95);
-}
-
-.edit-container {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  position: relative;
-  min-width: 0;
-  overflow: hidden;
-}
-
-.todo-edit-input {
-  flex: 1;
-  min-width: 0;
-}
-
-.todo-edit-input input {
-  padding: 6px 8px !important;
-  border: 1px solid #1F49AD !important;
-  border-radius: 4px !important;
-  font-size: 13px !important;
-  line-height: 1.538em !important;
-  box-shadow: 0 0 0 3px rgba(31, 73, 173, 0.1) !important;
-}
-
-.edit-actions-panel {
-  display: flex;
-  gap: 4px;
-  background: #FFFFFF;
-  padding: 2px;
-  border-radius: 4px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  border: 1px solid #BEBEC4;
-  flex-shrink: 0;
-}
-
-.save-btn,
-.cancel-btn {
-  width: 24px;
-  height: 24px;
-  padding: 0;
-  border: none;
-  border-radius: 3px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-}
-
-.save-btn {
-  background: #1F49AD;
-  color: white;
-}
-
-.save-btn:hover {
-  background: #1a3d8f;
-  transform: scale(1.05);
-}
-
-.save-btn:active {
-  transform: scale(0.95);
-}
-
-.cancel-btn {
-  background: #F2F2F5;
-  color: #848489;
-}
-
-.cancel-btn:hover {
-  background: #E5E5E7;
-  color: #1C1C29;
-  transform: scale(1.05);
-}
-
-.cancel-btn:active {
-  transform: scale(0.95);
-}
-
+/* 空状态 */
 .empty-state {
   text-align: center;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: #848489;
-  margin-top: 20px;
-}
-
-.empty-state.show {
-  display: flex;
+  color: rgba(0, 0, 0, 0.45);
 }
 
 .empty-state p {
-  font-size: 13px;
+  font-size: 14px;
   margin: 0 0 8px 0;
-  line-height: 1.538em;
 }
 
 .empty-state .subtitle {
-  color: #BEBEC4;
-  margin: 0;
-}
-
-/* Ant Design 组件样式覆盖 */
-.ant-input {
-  font-size: 13px !important;
-  font-family: 'IBM Plex Sans', sans-serif !important;
-  line-height: 1.538em !important;
-}
-
-.ant-input:focus {
-  border-color: #1F49AD !important;
-  box-shadow: 0 0 0 2px rgba(31, 73, 173, 0.1) !important;
-}
-
-.ant-btn-primary {
-  background: #1F49AD !important;
-}
-
-.ant-btn-primary:hover {
-  background: #1a3d8f !important;
-}
-
-.ant-checkbox-wrapper {
-  font-size: 13px !important;
-}
-
-.ant-checkbox-checked .ant-checkbox-inner {
-  background-color: #1F49AD !important;
-  border-color: #1F49AD !important;
+  color: rgba(0, 0, 0, 0.25);
+  font-size: 12px;
 }
 

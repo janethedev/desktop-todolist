@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Input, Button } from 'antd';
+import { Input, Button, Space } from 'antd';
+import { StarOutlined, StarFilled, PlusOutlined } from '@ant-design/icons';
 
 function TodoInput({ onAddTodo, isImportant, onToggleImportant }) {
   const [inputValue, setInputValue] = useState('');
@@ -12,32 +13,36 @@ function TodoInput({ onAddTodo, isImportant, onToggleImportant }) {
     }
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleAdd();
-    }
-  };
-
   return (
     <div className="input-section">
-      <button
-        className={`important-toggle ${isImportant ? 'active' : ''}`}
-        onClick={onToggleImportant}
-        title="标记为重要"
-      >
-        ⭐
-      </button>
-      <Input
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-        onKeyPress={handleKeyPress}
-        placeholder="添加新任务..."
-        maxLength={200}
-        className="todo-input"
-      />
-      <Button type="primary" onClick={handleAdd} className="add-btn">
-        +
-      </Button>
+      <Space.Compact style={{ width: '100%' }}>
+        <Button
+          icon={isImportant ? <StarFilled /> : <StarOutlined />}
+          type={isImportant ? 'primary' : 'default'}
+          onClick={onToggleImportant}
+          title="标记为重要"
+          danger={isImportant}
+          style={{ 
+            color: isImportant ? '#faad14' : undefined,
+            borderColor: isImportant ? '#faad14' : undefined,
+            background: isImportant ? '#fffbe6' : undefined
+          }}
+        />
+        <Input
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          onPressEnter={handleAdd}
+          placeholder="添加新任务..."
+          maxLength={200}
+        />
+        <Button 
+          type="primary" 
+          icon={<PlusOutlined />}
+          onClick={handleAdd}
+        >
+          
+        </Button>
+      </Space.Compact>
     </div>
   );
 }
