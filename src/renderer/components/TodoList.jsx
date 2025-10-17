@@ -32,7 +32,8 @@ function SortableTodoItem({ todo, editingId, editValue, setEditValue, handleStar
   } = useSortable({ id: todo.id });
 
   const style = {
-    transform: CSS.Transform.toString(transform),
+    // 只保留垂直方向的移动，忽略水平方向
+    transform: transform ? `translate3d(0, ${transform.y}px, 0)` : undefined,
     transition,
     opacity: isDragging ? 0.5 : 1,
   };

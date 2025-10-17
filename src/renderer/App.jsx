@@ -102,9 +102,6 @@ function App() {
     
     setTodos(sortedTodos);
     saveTodos(sortedTodos);
-    
-    // 重置重要性标记
-    setIsImportant(false);
   };
 
   // 切换完成状态
