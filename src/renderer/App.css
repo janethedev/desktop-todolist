@@ -130,6 +130,8 @@ body {
   flex: 1;
   overflow-y: auto;
   padding-right: 4px;
+  padding-left: 20px;  /* 为拖拽图标留出空间 */
+  margin-left: -8px;  /* 新增：向左偏移 */
 }
 
 .todo-list-empty {
@@ -186,6 +188,72 @@ body {
   background: #bfbfbf;
 }
 
+/* Notion 风格的待办项容器 */
+.todo-list-item {
+  position: relative;
+  padding: 6px 12px 6px 8px !important;
+  margin-bottom: 4px;
+  border: 1px solid #f0f0f0;
+  border-radius: 4px;
+  background: white;
+  transition: all 0.15s ease;
+}
+
+/* 拖拽时整行轻微高亮和阴影 */
+.todo-list-item:active {
+  background: #fafafa;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Notion 风格的拖拽图标 */
+.drag-handle {
+  position: absolute;
+  left: -24px;  /* 放在容器外面 */
+  top: 50%;
+  transform: translateY(-50%) translateX(-6px);  /* 初始位置稍微偏左 */
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  color: #d9d9d9;
+  opacity: 0;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);  /* 使用贝塞尔曲线实现丝滑动画 */
+  font-size: 14px;
+  border-radius: 3px;
+  user-select: none;
+}
+
+/* 使用伪元素进一步扩大交互热区 */
+.drag-handle::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  /* 这个伪元素不可见，但扩大了点击区域 */
+}
+
+/* 悬停时图标滑入并显示 */
+.todo-list-item:hover .drag-handle {
+  opacity: 1;
+  color: #999;
+  transform: translateY(-50%) translateX(0);  /* 滑入到正确位置 */
+}
+
+/* 悬停在拖拽图标本身时的效果 */
+.drag-handle:hover {
+  background: #f5f5f5;
+  color: #666;
+}
+
+/* 拖拽时的光标 */
+.drag-handle:active {
+  cursor: grabbing;
+}
+
 /* 重要性标记样式 */
 .todo-item-important {
   background: #fffbe6 !important;
@@ -230,5 +298,14 @@ body {
 .empty-state .subtitle {
   color: rgba(0, 0, 0, 0.25);
   font-size: 12px;
+}
+
+/* App.css 添加 */
+.ant-list-item:hover .drag-handle {
+  opacity: 1 !important;
+}
+
+.drag-handle:active {
+  cursor: grabbing !important;
 }
 
