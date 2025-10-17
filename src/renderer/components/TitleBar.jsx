@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Button, Space } from 'antd';
 import { PushpinOutlined, PushpinFilled, MinusOutlined, CloseOutlined } from '@ant-design/icons';
 
 function TitleBar() {
@@ -21,21 +22,32 @@ function TitleBar() {
   return (
     <div className="titlebar">
       <div style={{ flex: 1 }}></div>
-      <div className="titlebar-actions">
-        <button
-          className={`pin-btn ${isPinned ? 'pinned' : ''}`}
+      <Space size={2} className="titlebar-actions">
+        <Button
+          type="text"
+          size="small"
+          icon={isPinned ? <PushpinFilled /> : <PushpinOutlined />}
           onClick={handlePin}
           title="置顶"
-        >
-          {isPinned ? <PushpinFilled /> : <PushpinOutlined />}
-        </button>
-        <button className="minimize-btn" onClick={handleMinimize} title="最小化">
-          <MinusOutlined />
-        </button>
-        <button className="close-btn" onClick={handleClose} title="关闭">
-          <CloseOutlined />
-        </button>
-      </div>
+          className={isPinned ? 'titlebar-btn-pinned' : ''}
+        />
+        <Button
+          type="text"
+          size="small"
+          icon={<MinusOutlined />}
+          onClick={handleMinimize}
+          title="最小化"
+        />
+        <Button
+          type="text"
+          size="small"
+          icon={<CloseOutlined />}
+          onClick={handleClose}
+          title="关闭"
+          danger
+          className="titlebar-btn-close"
+        />
+      </Space>
     </div>
   );
 }

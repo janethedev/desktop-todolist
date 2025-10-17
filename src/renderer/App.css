@@ -18,12 +18,6 @@ body {
   flex-direction: column;
 }
 
-.app {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
 /* 自定义标题栏样式 */
 .titlebar {
   display: flex;
@@ -34,124 +28,29 @@ body {
   background: #f5f5f5;
   -webkit-app-region: drag;
   user-select: none;
-  gap: 8px;
   border-bottom: 1px solid #d9d9d9;
 }
 
 .titlebar-actions {
-  display: flex;
-  gap: 2px;  /* 按钮之间只有2px间距，非常紧凑 */
-  align-items: center;
   -webkit-app-region: no-drag;
 }
 
-.pin-btn {
-  width: 28px;
-  height: 24px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  -webkit-app-region: no-drag;
-  padding: 0;
-  line-height: 1;
-  transition: all 0.2s ease;
+/* Ant Design Button 在 titlebar 中的样式调整 */
+.titlebar-actions .ant-btn {
   color: rgba(0, 0, 0, 0.45);
-  border-radius: 4px;
 }
 
-.pin-btn svg {
-  transition: all 0.2s ease;
-}
-
-.pin-btn:hover {
-  background: #e6e6e6;
+.titlebar-actions .ant-btn:hover {
   color: rgba(0, 0, 0, 0.75);
 }
 
-.pin-btn.pinned {
-  color: rgba(0, 0, 0, 0.75);  /* 置顶时图标颜色稍深一点 */
+.titlebar-btn-pinned {
+  color: rgba(0, 0, 0, 0.75) !important;
 }
 
-.titlebar-text {
-  color: rgba(0, 0, 0, 0.85);
-  font-size: 13px;
-  font-weight: 500;
-  flex: 1;
-}
-
-.minimize-btn {
-  width: 28px;
-  height: 24px;
-  border: none;
-  background: transparent;
-  color: rgba(0, 0, 0, 0.45);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  -webkit-app-region: no-drag;
-  padding: 0;
-  line-height: 1;
-  transition: all 0.2s ease;
-  border-radius: 4px;
-}
-
-.minimize-btn:hover {
-  background: #e6e6e6;
-  color: rgba(0, 0, 0, 0.75);
-}
-
-.close-btn {
-  width: 28px;
-  height: 24px;
-  border: none;
-  background: transparent;
-  color: rgba(0, 0, 0, 0.45);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  -webkit-app-region: no-drag;
-  padding: 0;
-  line-height: 1;
-  transition: all 0.2s ease;
-  border-radius: 4px;
-}
-
-.close-btn:hover {
-  background: #ff4d4f;
-  color: white;
-}
-
-/* 主容器 */
-.container {
-  background: #FFFFFF;
-  width: 100%;
-  height: calc(100vh - 32px);
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-
-/* 输入区域 */
-.input-section {
-  margin-bottom: 16px;
-}
-
-/* 统计信息 */
-.stats {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  padding: 8px 12px;
-  background: #fafafa;
-  border-radius: 4px;
-  font-size: 13px;
-  color: rgba(0, 0, 0, 0.65);
+.titlebar-btn-close:hover {
+  background: #ff4d4f !important;
+  color: white !important;
 }
 
 /* 待办列表 */
@@ -159,62 +58,8 @@ body {
   flex: 1;
   overflow-y: auto;
   padding-right: 4px;
-  padding-left: 20px;  /* 为拖拽图标留出空间 */
-  margin-left: -8px;  /* 新增：向左偏移 */
-}
-
-.todo-list-empty {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* 使编辑区域在任何情况下都占满宽度 */
-.edit-compact {
-  display: flex;
-  flex: 1;
-  min-width: 0;
-  gap: 4px;
-  align-items: center;
-}
-
-/* 让待办项行容器与左侧区域都能铺满行宽 */
-.todo-item-row {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.todo-item-left {
-  display: flex;
-  flex: 1;
-  min-width: 0;
-  align-items: center;
-  gap: 8px;
-}
-
-.todo-item-actions {
-  display: flex;
-  gap: 4px;
-  align-items: center;
-}
-
-.todo-list::-webkit-scrollbar {
-  width: 6px;
-}
-
-.todo-list::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.todo-list::-webkit-scrollbar-thumb {
-  background: #d9d9d9;
-  border-radius: 3px;
-}
-
-.todo-list::-webkit-scrollbar-thumb:hover {
-  background: #bfbfbf;
+  padding-left: 24px;  /* 为拖拽图标留出空间 */
+  margin-left: -8px;  /* 向左偏移，为拖拽手柄腾出空间 */
 }
 
 /* Notion 风格的待办项容器 */
@@ -289,44 +134,9 @@ body {
   border-left: 3px solid #faad14 !important;
 }
 
-.important-badge {
-  font-size: 14px;
-  margin-right: -4px;
-}
-
-.todo-text {
-  flex: 1;
-  cursor: pointer;
-  user-select: none;
-}
-
+/* 待办文本悬停效果 */
 .todo-text:hover {
   color: #1890ff;
-}
-
-.todo-text-completed {
-  text-decoration: line-through;
-  color: rgba(0, 0, 0, 0.45);
-}
-
-/* 空状态 */
-.empty-state {
-  text-align: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: rgba(0, 0, 0, 0.45);
-}
-
-.empty-state p {
-  font-size: 14px;
-  margin: 0 0 8px 0;
-}
-
-.empty-state .subtitle {
-  color: rgba(0, 0, 0, 0.25);
-  font-size: 12px;
 }
 
 /* App.css 添加 */

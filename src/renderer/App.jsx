@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
-import { getCurrentWindow } from '@tauri-apps/api/window';  // 添加导入
+import { Layout, Flex } from 'antd';
+import { getCurrentWindow } from '@tauri-apps/api/window';
 import TitleBar from './components/TitleBar';
 import TodoInput from './components/TodoInput';
 import TodoStats from './components/TodoStats';
 import TodoList from './components/TodoList';
+
+const { Content } = Layout;
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -170,24 +173,28 @@ function App() {
   const completedTodos = todos.filter(todo => todo.completed).length;
 
   return (
-    <div className="app">
+    <Layout className="app" style={{ height: '100vh' }}>
       <TitleBar />
-      <div className="container">
-        <TodoInput
-          onAddTodo={handleAddTodo}
-          isImportant={isImportant}
-          onToggleImportant={() => setIsImportant(!isImportant)}
-        />
-        <TodoStats total={totalTodos} completed={completedTodos} />
-        <TodoList
-          todos={todos}
-          onToggleComplete={handleToggleComplete}
-          onDelete={handleDelete}
-          onEdit={handleEdit}
-          onReorder={handleReorder}
-        />
-      </div>
-    </div>
+      <Content className="container" style={{ padding: 12 }}>
+        <Flex vertical gap={10} style={{ height: '100%' }}>
+          <TodoInput
+            onAddTodo={handleAddTodo}
+            isImportant={isImportant}
+            onToggleImportant={() => setIsImportant(!isImportant)}
+          />
+          <TodoStats total={totalTodos} completed={completedTodos} />
+          <div style={{ flex: 1, overflow: 'auto' }}>
+            <TodoList
+              todos={todos}
+              onToggleComplete={handleToggleComplete}
+              onDelete={handleDelete}
+              onEdit={handleEdit}
+              onReorder={handleReorder}
+            />
+          </div>
+        </Flex>
+      </Content>
+    </Layout>
   );
 }
 

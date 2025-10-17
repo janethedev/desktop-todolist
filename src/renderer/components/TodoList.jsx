@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { List, Checkbox, Input, Button, Space, Typography, Empty } from 'antd';
+import { List, Checkbox, Input, Button, Space, Flex, Typography, Empty } from 'antd';
 import { EditOutlined, DeleteOutlined, CheckOutlined, CloseOutlined, StarFilled, HolderOutlined } from '@ant-design/icons';
 import {
   DndContext,
@@ -53,17 +53,17 @@ function SortableTodoItem({ todo, editingId, editValue, setEditValue, handleStar
         <HolderOutlined />
       </div>
       
-      <div className="todo-item-row">
-        <div className="todo-item-left">
+      <Flex justify="space-between" align="center" style={{ width: '100%' }}>
+        <Flex flex={1} align="center" gap={8} style={{ minWidth: 0 }}>
           <Checkbox
             checked={todo.completed}
             onChange={() => onToggleComplete(todo.id)}
           />
-          {todo.important && (
-            <StarFilled className="important-badge" style={{ color: '#faad14' }} />
-          )}
+          {/* {todo.important && (
+            <StarFilled style={{ color: '#faad14', fontSize: 14, marginRight: -4 }} />
+          )} */}
           {editingId === todo.id ? (
-            <div className="edit-compact">
+            <Space.Compact style={{ flex: 1, minWidth: 0 }}>
               <Input
                 value={editValue}
                 onChange={(e) => setEditValue(e.target.value)}
@@ -88,21 +88,21 @@ function SortableTodoItem({ todo, editingId, editValue, setEditValue, handleStar
                 onClick={handleCancelEdit}
                 title="取消 (Esc)"
               />
-            </div>
+            </Space.Compact>
           ) : (
             <Text
               className="todo-text"
               delete={todo.completed}
               type={todo.completed ? 'secondary' : undefined}
               onDoubleClick={() => handleStartEdit(todo)}
-              style={{ flex: 1, cursor: 'pointer' }}
+              style={{ flex: 1, cursor: 'pointer', userSelect: 'none' }}
             >
               {todo.text}
             </Text>
           )}
-        </div>
+        </Flex>
         {editingId !== todo.id && (
-          <div className="todo-item-actions">
+          <Space size={4}>
             <Button
               type="text"
               size="small"
@@ -118,9 +118,9 @@ function SortableTodoItem({ todo, editingId, editValue, setEditValue, handleStar
               onClick={() => onDelete(todo.id)}
               title="删除"
             />
-          </div>
+          </Space>
         )}
-      </div>
+      </Flex>
     </List.Item>
   );
 }
@@ -169,16 +169,16 @@ function TodoList({ todos, onToggleComplete, onDelete, onEdit, onReorder }) {
 
   if (todos.length === 0) {
     return (
-      <div className="todo-list todo-list-empty">
+      <Flex className="todo-list" justify="center" align="center">
         <Empty
           description={
-            <div>
-              <div>暂无待办事项</div>
+            <Space direction="vertical" size={0}>
+              <Text>暂无待办事项</Text>
               <Text type="secondary" style={{ fontSize: 12 }}>添加你的第一个任务</Text>
-            </div>
+            </Space>
           }
         />
-      </div>
+      </Flex>
     );
   }
 
