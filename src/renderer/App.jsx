@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Layout, Flex } from 'antd';
+import { Layout, Flex, ConfigProvider } from 'antd';
 import { getCurrentWindow } from '@tauri-apps/api/window';
+import { useTranslation } from 'react-i18next';
+import zhCN from 'antd/locale/zh_CN';
+import enUS from 'antd/locale/en_US';
 import TitleBar from './components/TitleBar';
 import TodoInput from './components/TodoInput';
 import TodoStats from './components/TodoStats';
@@ -9,8 +12,12 @@ import TodoList from './components/TodoList';
 const { Content } = Layout;
 
 function App() {
+  const { t, i18n } = useTranslation();
   const [todos, setTodos] = useState([]);
   const [isImportant, setIsImportant] = useState(false);
+  
+  // 根据当前语言选择 Ant Design locale
+  const antdLocale = i18n.language === 'zh-CN' ? zhCN : enUS;
 
   // 排序待办事项：已完成的总是在未完成的后面，同状态内按 order 排序
   const sortTodos = (todosToSort) => {
@@ -39,7 +46,7 @@ function App() {
         
         setTodos(sortTodos(todosWithFields));
       } catch (error) {
-        console.error('加载待办事项失败:', error);
+        console.error(t('app.loadTodosFailed'), error);
         // 即使加载失败，也继续使用空数组
       } finally {
         // 无论成功还是失败，都显示窗口
@@ -47,7 +54,7 @@ function App() {
           const appWindow = getCurrentWindow();
           await appWindow.show();
         } catch (err) {
-          console.error('显示窗口失败:', err);
+          console.error(t('app.showWindowFailed'), err);
         }
       }
     };
@@ -177,37 +184,39 @@ function App() {
   const completedTodos = todos.filter(todo => todo.completed).length;
 
   return (
-    <Layout className="app" style={{ height: '100vh' }}>
-      <TitleBar />
-      <Content className="container" style={{ padding: '10px 20px' }}>
-        <Flex vertical gap={10} style={{ height: '100%' }}>
-          <TodoInput
-            onAddTodo={handleAddTodo}
-            isImportant={isImportant}
-            onToggleImportant={() => setIsImportant(!isImportant)}
-          />
-          <TodoStats 
-            total={totalTodos} 
-            completed={completedTodos} 
-            onClearCompleted={handleClearCompleted}
-          />
-          <div style={{ 
-            flex: 1, 
-            overflow: 'auto',
-            marginLeft: '-14px',
-            marginRight: '-4px'
-             }}>
-            <TodoList
-              todos={todos}
-              onToggleComplete={handleToggleComplete}
-              onDelete={handleDelete}
-              onEdit={handleEdit}
-              onReorder={handleReorder}
+    <ConfigProvider locale={antdLocale}>
+      <Layout className="app" style={{ height: '100vh' }}>
+        <TitleBar />
+        <Content className="container" style={{ padding: '10px 20px' }}>
+          <Flex vertical gap={10} style={{ height: '100%' }}>
+            <TodoInput
+              onAddTodo={handleAddTodo}
+              isImportant={isImportant}
+              onToggleImportant={() => setIsImportant(!isImportant)}
             />
-          </div>
-        </Flex>
-      </Content>
-    </Layout>
+            <TodoStats 
+              total={totalTodos} 
+              completed={completedTodos} 
+              onClearCompleted={handleClearCompleted}
+            />
+            <div style={{ 
+              flex: 1, 
+              overflow: 'auto',
+              marginLeft: '-14px',
+              marginRight: '-4px'
+               }}>
+              <TodoList
+                todos={todos}
+                onToggleComplete={handleToggleComplete}
+                onDelete={handleDelete}
+                onEdit={handleEdit}
+                onReorder={handleReorder}
+              />
+            </div>
+          </Flex>
+        </Content>
+      </Layout>
+    </ConfigProvider>
   );
 }
 

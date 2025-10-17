@@ -1,0 +1,35 @@
+{
+  "app": {
+    "title": "QuickTask",
+    "loadTodosFailed": "加载待办事项失败:",
+    "showWindowFailed": "显示窗口失败:"
+  },
+  "input": {
+    "placeholder": "添加新任务...",
+    "markImportant": "标记为重要"
+  },
+  "list": {
+    "dragToSort": "拖动排序",
+    "save": "保存 (Enter)",
+    "cancel": "取消 (Esc)",
+    "edit": "编辑",
+    "delete": "删除",
+    "moreActions": "更多操作",
+    "emptyTitle": "暂无待办事项",
+    "emptyDescription": "添加你的第一个任务"
+  },
+  "stats": {
+    "completed": "已完成",
+    "clearCompleted": "清空已完成",
+    "clearConfirmTitle": "清空已完成",
+    "clearConfirmDescription": "确定要删除所有已完成的事项吗？",
+    "confirmOk": "确定",
+    "confirmCancel": "取消"
+  },
+  "titlebar": {
+    "pin": "置顶",
+    "minimize": "最小化",
+    "close": "关闭"
+  }
+}
+

@@ -1,7 +1,7 @@
 use std::fs;
 use tauri::Manager;
 use tauri::tray::{TrayIconBuilder, TrayIconEvent, MouseButton, MouseButtonState};
-use tauri::menu::{Menu, MenuItem};
+use tauri::menu::{Menu, MenuItem, Submenu};
 use serde::{Deserialize, Serialize};
 
 // 窗口状态结构
@@ -93,6 +93,78 @@ fn toggle_always_on_top(window: tauri::Window, flag: bool) -> Result<(), String>
     Ok(())
 }
 
+// 保存语言设置
+#[tauri::command]
+fn save_language(app: tauri::AppHandle, language: String) -> Result<(), String> {
+    let app_dir = app.path().app_data_dir()
+        .map_err(|e| e.to_string())?;
+    
+    fs::create_dir_all(&app_dir).map_err(|e| e.to_string())?;
+    
+    let lang_path = app_dir.join("language.txt");
+    fs::write(lang_path, language).map_err(|e| e.to_string())?;
+    
+    Ok(())
+}
+
+// 加载语言设置
+#[tauri::command]
+fn load_language(app: tauri::AppHandle) -> Result<String, String> {
+    let app_dir = app.path().app_data_dir()
+        .map_err(|e| e.to_string())?;
+    
+    let lang_path = app_dir.join("language.txt");
+    
+    if lang_path.exists() {
+        fs::read_to_string(lang_path).map_err(|e| e.to_string())
+    } else {
+        // 默认英文
+        Ok("en-US".to_string())
+    }
+}
+
+// 获取应用语言（从配置文件读取，默认英文）
+fn get_app_language(app: &tauri::AppHandle) -> String {
+    if let Ok(app_dir) = app.path().app_data_dir() {
+        let lang_file = app_dir.join("language.txt");
+        if lang_file.exists() {
+            if let Ok(lang) = fs::read_to_string(lang_file) {
+                let lang = lang.trim().to_string();
+                if !lang.is_empty() {
+                    return lang;
+                }
+            }
+        }
+    }
+    // 默认英文
+    String::from("en-US")
+}
+
+// 构建托盘菜单
+fn build_tray_menu(app: &tauri::AppHandle, current_lang: &str) -> Result<Menu<tauri::Wry>, tauri::Error> {
+    let is_chinese = current_lang.starts_with("zh");
+    
+    let (show_text, lang_text, quit_text) = if is_chinese {
+        ("显示窗口", "语言", "退出")
+    } else {
+        ("Show Window", "Language", "Quit")
+    };
+    
+    // 语言子菜单项
+    let zh_cn = MenuItem::with_id(app, "lang_zh", "简体中文", true, None::<&str>)?;
+    let en_us = MenuItem::with_id(app, "lang_en", "English", true, None::<&str>)?;
+    
+    // 创建语言子菜单
+    let lang_submenu = Submenu::with_items(app, lang_text, true, &[&zh_cn, &en_us])?;
+    
+    // 主菜单项
+    let show_item = MenuItem::with_id(app, "show", show_text, true, None::<&str>)?;
+    let quit_item = MenuItem::with_id(app, "quit", quit_text, true, None::<&str>)?;
+    
+    // 组装菜单
+    Menu::with_items(app, &[&show_item, &lang_submenu, &quit_item])
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
   tauri::Builder::default()
@@ -105,17 +177,17 @@ pub fn run() {
       }
     }))
     .setup(|app| {
-      // 创建托盘菜单
-      let show_menu_item = MenuItem::with_id(app, "show", "显示窗口", true, None::<&str>)?;
-      let quit_menu_item = MenuItem::with_id(app, "quit", "退出", true, None::<&str>)?;
-      let menu = Menu::with_items(app, &[&show_menu_item, &quit_menu_item])?;
+      // 读取保存的语言，默认英文
+      let language = get_app_language(&app.handle());
       
-      // 创建系统托盘图标
-      let _tray = TrayIconBuilder::new()
+      // 构建托盘菜单
+      let menu = build_tray_menu(&app.handle(), &language)?;
+      
+      // 创建系统托盘图标（使用 with_id 指定 ID）
+      let _tray = TrayIconBuilder::with_id("main")
         .icon(app.default_window_icon().unwrap().clone())
         .tooltip("QuickTask")
         .menu(&menu)
-        .show_menu_on_left_click(false)
         .on_menu_event(|app, event| {
           // 处理菜单点击事件
           match event.id().as_ref() {
@@ -123,6 +195,34 @@ pub fn run() {
               if let Some(window) = app.get_webview_window("main") {
                 let _ = window.show();
                 let _ = window.set_focus();
+              }
+            }
+            "lang_zh" => {
+              // 切换到中文
+              let _ = save_language(app.clone(), "zh-CN".to_string());
+              // 重建托盘菜单
+              if let Ok(new_menu) = build_tray_menu(&app, "zh-CN") {
+                if let Some(tray) = app.tray_by_id("main") {
+                  let _ = tray.set_menu(Some(new_menu));
+                }
+              }
+              // 通知前端刷新
+              if let Some(window) = app.get_webview_window("main") {
+                let _ = window.eval("window.location.reload()");
+              }
+            }
+            "lang_en" => {
+              // 切换到英文
+              let _ = save_language(app.clone(), "en-US".to_string());
+              // 重建托盘菜单
+              if let Ok(new_menu) = build_tray_menu(&app, "en-US") {
+                if let Some(tray) = app.tray_by_id("main") {
+                  let _ = tray.set_menu(Some(new_menu));
+                }
+              }
+              // 通知前端刷新
+              if let Some(window) = app.get_webview_window("main") {
+                let _ = window.eval("window.location.reload()");
               }
             }
             "quit" => {
@@ -196,7 +296,9 @@ pub fn run() {
       close_window,
       minimize_window,
       toggle_always_on_top,
-      save_window_state
+      save_window_state,
+      save_language,
+      load_language
     ])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");

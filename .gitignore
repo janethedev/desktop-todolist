@@ -30,3 +30,6 @@ dev.log
 # Data files (optional - comment out if you want to track)
 todos.json
 
+# special files
+.cursorrules
+

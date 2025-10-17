@@ -22,6 +22,10 @@ export const tauriAPI = {
   
   toggleAlwaysOnTop: async (flag) => {
     await invoke('toggle_always_on_top', { flag });
+  },
+  
+  loadLanguage: async () => {
+    return await invoke('load_language');
   }
 };
 

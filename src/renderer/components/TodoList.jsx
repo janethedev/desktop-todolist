@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { List, Checkbox, Input, Button, Space, Flex, Typography, Empty, Dropdown } from 'antd';
 import { EditOutlined, DeleteOutlined, CheckOutlined, CloseOutlined, StarFilled, HolderOutlined, MoreOutlined } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 import {
   DndContext,
   closestCenter,
@@ -21,7 +22,7 @@ import { CSS } from '@dnd-kit/utilities';
 const { Text } = Typography;
 
 // 可拖拽的待办事项组件
-function SortableTodoItem({ todo, editingId, editValue, setEditValue, handleStartEdit, handleSaveEdit, handleCancelEdit, onToggleComplete, onDelete }) {
+function SortableTodoItem({ todo, editingId, editValue, setEditValue, handleStartEdit, handleSaveEdit, handleCancelEdit, onToggleComplete, onDelete, t }) {
   const {
     attributes,
     listeners,
@@ -49,7 +50,7 @@ function SortableTodoItem({ todo, editingId, editValue, setEditValue, handleStar
         className="drag-handle"
         {...attributes} 
         {...listeners} 
-        title="拖动排序"
+        title={t('list.dragToSort')}
       >
         <HolderOutlined />
       </div>
@@ -81,13 +82,13 @@ function SortableTodoItem({ todo, editingId, editValue, setEditValue, handleStar
                 size="small"
                 icon={<CheckOutlined />}
                 onClick={() => handleSaveEdit(todo.id)}
-                title="保存 (Enter)"
+                title={t('list.save')}
               />
               <Button
                 size="small"
                 icon={<CloseOutlined />}
                 onClick={handleCancelEdit}
-                title="取消 (Esc)"
+                title={t('list.cancel')}
               />
             </Space.Compact>
           ) : (
@@ -108,13 +109,13 @@ function SortableTodoItem({ todo, editingId, editValue, setEditValue, handleStar
               items: [
                 {
                   key: 'edit',
-                  label: '编辑',
+                  label: t('list.edit'),
                   icon: <EditOutlined />,
                   onClick: () => handleStartEdit(todo)
                 },
                 {
                   key: 'delete',
-                  label: '删除',
+                  label: t('list.delete'),
                   icon: <DeleteOutlined />,
                   danger: true,
                   onClick: () => onDelete(todo.id)
@@ -130,7 +131,7 @@ function SortableTodoItem({ todo, editingId, editValue, setEditValue, handleStar
               type="text"
               size="small"
               icon={<MoreOutlined />}
-              title="更多操作"
+              title={t('list.moreActions')}
             />
           </Dropdown>
         )}
@@ -140,6 +141,7 @@ function SortableTodoItem({ todo, editingId, editValue, setEditValue, handleStar
 }
 
 function TodoList({ todos, onToggleComplete, onDelete, onEdit, onReorder }) {
+  const { t } = useTranslation();
   const [editingId, setEditingId] = useState(null);
   const [editValue, setEditValue] = useState('');
 
@@ -187,8 +189,8 @@ function TodoList({ todos, onToggleComplete, onDelete, onEdit, onReorder }) {
         <Empty
           description={
             <Space direction="vertical" size={0}>
-              <Text>暂无待办事项</Text>
-              <Text type="secondary" style={{ fontSize: 12 }}>添加你的第一个任务</Text>
+              <Text>{t('list.emptyTitle')}</Text>
+              <Text type="secondary" style={{ fontSize: 12 }}>{t('list.emptyDescription')}</Text>
             </Space>
           }
         />
@@ -221,6 +223,7 @@ function TodoList({ todos, onToggleComplete, onDelete, onEdit, onReorder }) {
               handleCancelEdit={handleCancelEdit}
               onToggleComplete={onToggleComplete}
               onDelete={onDelete}
+              t={t}
             />
           )}
         />

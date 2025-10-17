@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { Input, Button, Space } from 'antd';
 import { StarOutlined, StarFilled, PlusOutlined } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 
 function TodoInput({ onAddTodo, isImportant, onToggleImportant }) {
+  const { t } = useTranslation();
   const [inputValue, setInputValue] = useState('');
 
   const handleAdd = () => {
@@ -19,7 +21,7 @@ function TodoInput({ onAddTodo, isImportant, onToggleImportant }) {
         icon={isImportant ? <StarFilled /> : <StarOutlined />}
         type={isImportant ? 'primary' : 'default'}
         onClick={onToggleImportant}
-        title="标记为重要"
+        title={t('input.markImportant')}
         danger={isImportant}
         style={{ 
           color: isImportant ? '#faad14' : undefined,
@@ -31,7 +33,7 @@ function TodoInput({ onAddTodo, isImportant, onToggleImportant }) {
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         onPressEnter={handleAdd}
-        placeholder="添加新任务..."
+        placeholder={t('input.placeholder')}
         maxLength={200}
       />
       <Button 

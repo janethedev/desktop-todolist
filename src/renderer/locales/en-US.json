@@ -1,0 +1,35 @@
+{
+  "app": {
+    "title": "QuickTask",
+    "loadTodosFailed": "Failed to load todos:",
+    "showWindowFailed": "Failed to show window:"
+  },
+  "input": {
+    "placeholder": "Add new task...",
+    "markImportant": "Mark as important"
+  },
+  "list": {
+    "dragToSort": "Drag to sort",
+    "save": "Save (Enter)",
+    "cancel": "Cancel (Esc)",
+    "edit": "Edit",
+    "delete": "Delete",
+    "moreActions": "More actions",
+    "emptyTitle": "No tasks yet",
+    "emptyDescription": "Add your first task"
+  },
+  "stats": {
+    "completed": "Completed",
+    "clearCompleted": "Clear completed",
+    "clearConfirmTitle": "Clear completed",
+    "clearConfirmDescription": "Are you sure you want to delete all completed tasks?",
+    "confirmOk": "OK",
+    "confirmCancel": "Cancel"
+  },
+  "titlebar": {
+    "pin": "Pin on top",
+    "minimize": "Minimize",
+    "close": "Close"
+  }
+}
+

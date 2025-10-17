@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { Button, Space } from 'antd';
 import { PushpinOutlined, PushpinFilled, MinusOutlined, CloseOutlined } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 
 function TitleBar() {
+  const { t } = useTranslation();
   const [isPinned, setIsPinned] = useState(false);
 
   const handleClose = () => {
@@ -28,7 +30,7 @@ function TitleBar() {
           size="small"
           icon={isPinned ? <PushpinFilled /> : <PushpinOutlined />}
           onClick={handlePin}
-          title="置顶"
+          title={t('titlebar.pin')}
           className={isPinned ? 'titlebar-btn-pinned' : ''}
         />
         <Button
@@ -36,14 +38,14 @@ function TitleBar() {
           size="small"
           icon={<MinusOutlined />}
           onClick={handleMinimize}
-          title="最小化"
+          title={t('titlebar.minimize')}
         />
         <Button
           type="text"
           size="small"
           icon={<CloseOutlined />}
           onClick={handleClose}
-          title="关闭"
+          title={t('titlebar.close')}
           danger
           className="titlebar-btn-close"
         />
