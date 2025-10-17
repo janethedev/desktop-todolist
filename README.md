@@ -17,13 +17,13 @@
 
 ## 📸 预览
 
-|                                               |                                                |
-| --------------------------------------------- | ---------------------------------------------- |
-| <img src="./docs/preview_1.png" alt="预览" /> | <img src="./docs/preview_2.png" alt="预览"  /> |
+|                                               |                                                |                                                |                                                |
+| --------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
+| <img src="./docs/preview_1.png" alt="预览" /> | <img src="./docs/preview_2.png" alt="预览"  /> | <img src="./docs/preview_3.png" alt="预览"  /> | <img src="./docs/preview_4.png" alt="预览"  /> |
 
 ## 📥 下载安装
 
-前往 [Release 页面](https://github.com/janethedev/desktop-todolist/releases) 下载最新版本
+前往 [Release 页面](https://github.com/janethedev/desktop-todolist/releases) 下载 windows 版本
 
 ## ✨ 核心功能
 
