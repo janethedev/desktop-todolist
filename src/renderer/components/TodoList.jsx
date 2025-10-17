@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { List, Checkbox, Input, Button, Space, Flex, Typography, Empty } from 'antd';
-import { EditOutlined, DeleteOutlined, CheckOutlined, CloseOutlined, StarFilled, HolderOutlined } from '@ant-design/icons';
+import { List, Checkbox, Input, Button, Space, Flex, Typography, Empty, Dropdown } from 'antd';
+import { EditOutlined, DeleteOutlined, CheckOutlined, CloseOutlined, StarFilled, HolderOutlined, MoreOutlined } from '@ant-design/icons';
 import {
   DndContext,
   closestCenter,
@@ -102,23 +102,36 @@ function SortableTodoItem({ todo, editingId, editValue, setEditValue, handleStar
           )}
         </Flex>
         {editingId !== todo.id && (
-          <Space size={4}>
+          <Dropdown
+            menu={{
+              items: [
+                {
+                  key: 'edit',
+                  label: '编辑',
+                  icon: <EditOutlined />,
+                  onClick: () => handleStartEdit(todo)
+                },
+                {
+                  key: 'delete',
+                  label: '删除',
+                  icon: <DeleteOutlined />,
+                  danger: true,
+                  onClick: () => onDelete(todo.id)
+                }
+              ]
+            }}
+            trigger={['click']}
+            align={{
+              offset: [16, 4],  // [水平偏移, 垂直偏移]
+            }}
+          >
             <Button
               type="text"
               size="small"
-              icon={<EditOutlined />}
-              onClick={() => handleStartEdit(todo)}
-              title="编辑"
+              icon={<MoreOutlined />}
+              title="更多操作"
             />
-            <Button
-              type="text"
-              size="small"
-              danger
-              icon={<DeleteOutlined />}
-              onClick={() => onDelete(todo.id)}
-              title="删除"
-            />
-          </Space>
+          </Dropdown>
         )}
       </Flex>
     </List.Item>

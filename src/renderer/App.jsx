@@ -156,6 +156,13 @@ function App() {
     saveTodos(newTodos);
   };
 
+  // 清空已完成的待办事项
+  const handleClearCompleted = () => {
+    const newTodos = todos.filter(todo => !todo.completed);
+    setTodos(newTodos);
+    saveTodos(newTodos);
+  };
+
   // 处理拖拽排序
   const handleReorder = (reorderedTodos) => {
     // 更新 order 字段
@@ -175,15 +182,24 @@ function App() {
   return (
     <Layout className="app" style={{ height: '100vh' }}>
       <TitleBar />
-      <Content className="container" style={{ padding: 12 }}>
+      <Content className="container" style={{ padding: '10px 20px' }}>
         <Flex vertical gap={10} style={{ height: '100%' }}>
           <TodoInput
             onAddTodo={handleAddTodo}
             isImportant={isImportant}
             onToggleImportant={() => setIsImportant(!isImportant)}
           />
-          <TodoStats total={totalTodos} completed={completedTodos} />
-          <div style={{ flex: 1, overflow: 'auto' }}>
+          <TodoStats 
+            total={totalTodos} 
+            completed={completedTodos} 
+            onClearCompleted={handleClearCompleted}
+          />
+          <div style={{ 
+            flex: 1, 
+            overflow: 'auto',
+            marginLeft: '-14px',
+            marginRight: '-4px'
+             }}>
             <TodoList
               todos={todos}
               onToggleComplete={handleToggleComplete}

@@ -13,10 +13,10 @@
     "windows": [
       {
         "title": "QuickTask",
-        "width": 280,
+        "width": 320,
         "height": 380,
-        "minWidth": 280,
-        "minHeight": 340,
+        "minWidth": 300,
+        "minHeight": 360,
         "resizable": true,
         "decorations": false,
         "backgroundColor": "#FFFFFF",

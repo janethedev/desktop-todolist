@@ -58,18 +58,28 @@ body {
   flex: 1;
   overflow-y: auto;
   padding-right: 4px;
-  padding-left: 24px;  /* 为拖拽图标留出空间 */
-  margin-left: -8px;  /* 向左偏移，为拖拽手柄腾出空间 */
+  padding-left: 24px;
+  margin-left: -8px;
+  
+  /* 隐藏滚动条 - 所有浏览器 */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+/* 隐藏滚动条 - Webkit (Chrome, Safari, Edge) */
+.todo-list::-webkit-scrollbar {
+  display: none;
 }
 
 /* Notion 风格的待办项容器 */
 .todo-list-item {
   position: relative;
-  padding: 6px 12px 6px 8px !important;
+  padding: 6px 4px 6px 8px !important;
   margin-bottom: 4px;
   border: 1px solid #f0f0f0;
   border-radius: 4px;
   background: white;
+  border-left: 3px solid #b3b0b0 !important;
   transition: all 0.15s ease;
 }
 
