@@ -2,6 +2,16 @@ use std::fs;
 use tauri::Manager;
 use tauri::tray::{TrayIconBuilder, TrayIconEvent, MouseButton, MouseButtonState};
 use tauri::menu::{Menu, MenuItem};
+use serde::{Deserialize, Serialize};
+
+// 窗口状态结构
+#[derive(Serialize, Deserialize, Debug)]
+struct WindowState {
+    width: u32,
+    height: u32,
+    x: i32,
+    y: i32,
+}
 
 // 保存待办事项
 #[tauri::command]
@@ -30,6 +40,36 @@ fn load_todos(app: tauri::AppHandle) -> Result<String, String> {
         fs::read_to_string(todos_path).map_err(|e| e.to_string())
     } else {
         Ok("[]".to_string())
+    }
+}
+
+// 保存窗口状态
+#[tauri::command]
+fn save_window_state(app: tauri::AppHandle, width: u32, height: u32, x: i32, y: i32) -> Result<(), String> {
+    let app_dir = app.path().app_data_dir()
+        .map_err(|e| e.to_string())?;
+    
+    fs::create_dir_all(&app_dir).map_err(|e| e.to_string())?;
+    
+    let state = WindowState { width, height, x, y };
+    let state_json = serde_json::to_string(&state).map_err(|e| e.to_string())?;
+    
+    let state_path = app_dir.join("window_state.json");
+    fs::write(state_path, state_json).map_err(|e| e.to_string())?;
+    
+    Ok(())
+}
+
+// 加载窗口状态
+fn load_window_state(app: &tauri::AppHandle) -> Option<WindowState> {
+    let app_dir = app.path().app_data_dir().ok()?;
+    let state_path = app_dir.join("window_state.json");
+    
+    if state_path.exists() {
+        let state_json = fs::read_to_string(state_path).ok()?;
+        serde_json::from_str(&state_json).ok()
+    } else {
+        None
     }
 }
 
@@ -108,6 +148,39 @@ pub fn run() {
         })
         .build(app)?;
       
+      // 恢复窗口状态
+      if let Some(window) = app.get_webview_window("main") {
+        if let Some(state) = load_window_state(&app.handle()) {
+          // 应用保存的窗口大小和位置
+          let _ = window.set_size(tauri::Size::Physical(tauri::PhysicalSize {
+            width: state.width,
+            height: state.height,
+          }));
+          let _ = window.set_position(tauri::Position::Physical(tauri::PhysicalPosition {
+            x: state.x,
+            y: state.y,
+          }));
+        }
+        
+        // 监听窗口移动和调整大小事件，自动保存
+        let app_handle = app.handle().clone();
+        window.on_window_event(move |event| {
+          if let tauri::WindowEvent::Resized(_) | tauri::WindowEvent::Moved(_) = event {
+            if let Some(window) = app_handle.get_webview_window("main") {
+              if let (Ok(size), Ok(position)) = (window.outer_size(), window.outer_position()) {
+                let _ = save_window_state(
+                  app_handle.clone(),
+                  size.width,
+                  size.height,
+                  position.x,
+                  position.y,
+                );
+              }
+            }
+          }
+        });
+      }
+      
       if cfg!(debug_assertions) {
         app.handle().plugin(
           tauri_plugin_log::Builder::default()
@@ -122,7 +195,8 @@ pub fn run() {
       load_todos,
       close_window,
       minimize_window,
-      toggle_always_on_top
+      toggle_always_on_top,
+      save_window_state
     ])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
