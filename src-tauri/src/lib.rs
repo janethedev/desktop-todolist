@@ -39,6 +39,13 @@ fn close_window(window: tauri::Window) {
     window.hide().unwrap();
 }
 
+// 最小化窗口
+#[tauri::command]
+fn minimize_window(window: tauri::Window) -> Result<(), String> {
+    window.minimize().map_err(|e| e.to_string())?;
+    Ok(())
+}
+
 // 切换窗口置顶
 #[tauri::command]
 fn toggle_always_on_top(window: tauri::Window, flag: bool) -> Result<(), String> {
@@ -114,6 +121,7 @@ pub fn run() {
       save_todos,
       load_todos,
       close_window,
+      minimize_window,
       toggle_always_on_top
     ])
     .run(tauri::generate_context!())

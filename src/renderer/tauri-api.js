@@ -16,6 +16,10 @@ export const tauriAPI = {
     await invoke('close_window');
   },
   
+  minimizeWindow: async () => {
+    await invoke('minimize_window');
+  },
+  
   toggleAlwaysOnTop: async (flag) => {
     await invoke('toggle_always_on_top', { flag });
   }

@@ -38,12 +38,18 @@ body {
   border-bottom: 1px solid #d9d9d9;
 }
 
+.titlebar-actions {
+  display: flex;
+  gap: 2px;  /* 按钮之间只有2px间距，非常紧凑 */
+  align-items: center;
+  -webkit-app-region: no-drag;
+}
+
 .pin-btn {
-  width: 24px;
+  width: 28px;
   height: 24px;
   border: none;
   background: transparent;
-  font-size: 14px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -52,19 +58,21 @@ body {
   padding: 0;
   line-height: 1;
   transition: all 0.2s ease;
-  opacity: 0.6;
+  color: rgba(0, 0, 0, 0.45);
   border-radius: 4px;
 }
 
+.pin-btn svg {
+  transition: all 0.2s ease;
+}
+
 .pin-btn:hover {
-  opacity: 1;
   background: #e6e6e6;
+  color: rgba(0, 0, 0, 0.75);
 }
 
 .pin-btn.pinned {
-  opacity: 1;
-  background: #1890ff;
-  color: white;
+  color: rgba(0, 0, 0, 0.75);  /* 置顶时图标颜色稍深一点 */
 }
 
 .titlebar-text {
@@ -74,13 +82,34 @@ body {
   flex: 1;
 }
 
-.close-btn {
-  width: 24px;
+.minimize-btn {
+  width: 28px;
   height: 24px;
   border: none;
   background: transparent;
   color: rgba(0, 0, 0, 0.45);
-  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-app-region: no-drag;
+  padding: 0;
+  line-height: 1;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+}
+
+.minimize-btn:hover {
+  background: #e6e6e6;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.close-btn {
+  width: 28px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.45);
   cursor: pointer;
   display: flex;
   align-items: center;
