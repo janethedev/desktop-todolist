@@ -8,6 +8,7 @@ import TitleBar from './components/TitleBar';
 import TodoInput from './components/TodoInput';
 import TodoStats from './components/TodoStats';
 import TodoList from './components/TodoList';
+import { playCheckSound, playUncheckSound } from './soundEffects'; 
 
 const { Content } = Layout;
 
@@ -117,6 +118,13 @@ function App() {
     if (!todo) return;
     
     const newCompleted = !todo.completed;
+
+    // 播放音效
+    if (newCompleted) {
+      playCheckSound(); // 完成任务时播放
+    } else {
+      playUncheckSound(); // 取消完成时播放（可选）
+    }
     
     // 如果从未完成变为已完成，移到已完成列表的末尾
     // 如果从已完成变为未完成，移到未完成列表的末尾

@@ -8,7 +8,7 @@ function TodoStats({ total, completed, onClearCompleted }) {
   const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
   
   return (
-    <Space direction="vertical" style={{ width: '100%', padding: '8px 12px', background: '#ffffff', boxShadow: '0 1px 4px rgba(0,0,0,0.08)', borderRadius: '4px' }} size={4}>
+    <Space direction="vertical" style={{ width: '100%', padding: '8px 12px', background: '#ffffff', boxShadow: '0 1px 4px rgba(0,0,0,0.08)', borderRadius: '4px' }} size={2}>
       <Space style={{ width: '100%', justifyContent: 'space-between' }}>
         <Text type="secondary" style={{ fontSize: 13 }}>
           {t('stats.completed')} {completed} / {total}
